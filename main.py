@@ -1,12 +1,24 @@
 from typing import Union
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
+class House(BaseModel):
+    adresse: str
+    surface: int
+    nb_rooms: int
+
+def fake_model():
+    return 1
+
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Message": "API created"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.post("/")
+def predict_house(house: House):
+    score = fake_model()
+    
+    return {"adresse": house.adresse,
+        "prediction": score}
